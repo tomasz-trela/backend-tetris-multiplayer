@@ -30,6 +30,7 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = true,
         ValidIssuer = builder.Configuration["JwtConfig:Issuer"],
         ValidAudience = builder.Configuration["JwtConfig:Audience"],
+        ClockSkew = TimeSpan.Zero
     };
 });
 builder.Services.AddAuthorization();

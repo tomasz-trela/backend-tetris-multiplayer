@@ -34,6 +34,7 @@ public class JwtGenerator
         var tokenDescripter = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity([
+                new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString()),
                 new Claim(ClaimTypes.Name, userAccount.Username)
             ]),
             Expires = tokenExpiryTimeStamp,

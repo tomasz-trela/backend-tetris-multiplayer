@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.WebSockets;
 using Microsoft.AspNetCore.Identity;
 
 namespace backend_tetris.entities;
@@ -18,4 +19,7 @@ public class MyUser
 
     [Required]
     public string PasswordHash { get; set; }
+    
+    [NotMapped]
+    public WebSocket? WebSocketConnection { get; set; }
 }
