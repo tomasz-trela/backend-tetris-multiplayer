@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wGfzhLNDQG4=",
+  "dgSpecHash": "V7Erbabnt3A=",
   "success": true,
-  "projectFilePath": "/Users/tt/RiderProjects/backend-tetris/backend-tetris/backend-tetris.csproj",
+  "projectFilePath": "/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/backend-tetris.csproj",
   "expectedPackageFiles": [
     "/Users/tt/.nuget/packages/bogus/35.6.1/bogus.35.6.1.nupkg.sha512",
     "/Users/tt/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/tt/RiderProjects/backend-tetris/backend-tetris/backend-tetris.csproj": {}
+    "/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/backend-tetris.csproj": {}
   },
   "projects": {
-    "/Users/tt/RiderProjects/backend-tetris/backend-tetris/backend-tetris.csproj": {
+    "/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/backend-tetris.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/tt/RiderProjects/backend-tetris/backend-tetris/backend-tetris.csproj",
+        "projectUniqueName": "/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/backend-tetris.csproj",
         "projectName": "backend-tetris",
-        "projectPath": "/Users/tt/RiderProjects/backend-tetris/backend-tetris/backend-tetris.csproj",
+        "projectPath": "/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/backend-tetris.csproj",
         "packagesPath": "/Users/tt/.nuget/packages/",
-        "outputPath": "/Users/tt/RiderProjects/backend-tetris/backend-tetris/obj/",
+        "outputPath": "/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/tt/.nuget/NuGet/NuGet.Config"
