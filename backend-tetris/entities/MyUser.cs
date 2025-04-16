@@ -22,4 +22,8 @@ public class MyUser
     
     [NotMapped]
     public WebSocket? WebSocketConnection { get; set; }
+
+    [NotMapped] 
+    public int score { get; set; } = 0;
+
 }

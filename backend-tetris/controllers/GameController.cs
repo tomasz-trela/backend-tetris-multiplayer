@@ -99,8 +99,8 @@ public class GameController : ControllerBase
             _logger.LogInformation("Receive message from {name}", user.Username);
 
             var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            
-            
+            var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+
             
             if (result.MessageType == WebSocketMessageType.Close)
             {
@@ -109,8 +109,7 @@ public class GameController : ControllerBase
                 user.WebSocketConnection = null;
                 return;
             }
-
-            await room.Broadcast(new ArraySegment<byte>(buffer, 0, result.Count));
+            await room.ReceiveMessage(user, message);
         }
     }
 }
