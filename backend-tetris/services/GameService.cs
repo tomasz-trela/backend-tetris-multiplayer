@@ -51,6 +51,4 @@ public class GameService
 
         return inviteCode;
     }
-
-    
 }

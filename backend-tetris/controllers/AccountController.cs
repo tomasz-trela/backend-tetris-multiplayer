@@ -1,6 +1,6 @@
 using backend_tetris.database;
+using backend_tetris.DTOs;
 using backend_tetris.entities;
-using backend_tetris.Models;
 using backend_tetris.services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +26,7 @@ public class AccountController : ControllerBase
     
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel request)
+    public async Task<ActionResult<LoginResponseDto>> Login(LoginRequestDto request)
     {
         var result = await _jwtGenerator.Authenticate(request);
         if (result is null)

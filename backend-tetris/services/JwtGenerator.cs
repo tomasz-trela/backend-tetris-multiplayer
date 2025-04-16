@@ -2,8 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using backend_tetris.database;
+using backend_tetris.DTOs;
 using backend_tetris.entities;
-using backend_tetris.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,14 +22,19 @@ public class JwtGenerator
         _configuration = configuration;
     }
 
-    public async Task<LoginResponseModel?> Authenticate(LoginRequestModel request)
+    public async Task<LoginResponseDto?> Authenticate(LoginRequestDto request)
     {
         
         if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
             return null;
         var userAccount = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username);
-        if (userAccount == null || _hasher.VerifyHashedPassword(userAccount, request.Password, userAccount.PasswordHash) == PasswordVerificationResult.Success)
+        if (userAccount == null)
             return null;
+
+        var result = _hasher.VerifyHashedPassword(userAccount, userAccount.PasswordHash, request.Password);
+        if (result != PasswordVerificationResult.Success)
+            return null;
+
         var issuer = _configuration["JwtConfig:Issuer"];
         var audience = _configuration["JwtConfig:Audience"];
         var key = _configuration["JwtConfig:Key"];
@@ -53,7 +58,7 @@ public class JwtGenerator
         var securityToken = tokenHandler.CreateToken(tokenDescripter);
         var accessToken = tokenHandler.WriteToken(securityToken);
 
-        return new LoginResponseModel
+        return new LoginResponseDto
         {
             AccessToken = accessToken,
             Username = request.Username,

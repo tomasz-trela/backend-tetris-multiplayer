@@ -99,6 +99,9 @@ public class GameController : ControllerBase
             _logger.LogInformation("Receive message from {name}", user.Username);
 
             var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            
+            
+            
             if (result.MessageType == WebSocketMessageType.Close)
             {
                 await GameService.RemovePlayer(user, result, room);

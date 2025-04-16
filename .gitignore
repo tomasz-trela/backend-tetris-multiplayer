@@ -489,3 +489,5 @@ backend-tetris/appsettings.Development.json
 
 *.out
 keys
+obj
+bin
