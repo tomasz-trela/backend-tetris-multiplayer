@@ -486,3 +486,6 @@ $RECYCLE.BIN/
 #config
 backend-tetris/appsettings.json
 backend-tetris/appsettings.Development.json
+
+*.out
+keys

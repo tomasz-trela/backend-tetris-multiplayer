@@ -2,7 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using backend_tetris.database;
+using backend_tetris.entities;
 using backend_tetris.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,6 +14,7 @@ public class JwtGenerator
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly PasswordHasher<MyUser> _hasher = new();
 
     public JwtGenerator(AppDbContext context, IConfiguration configuration)
     {
@@ -21,10 +24,11 @@ public class JwtGenerator
 
     public async Task<LoginResponseModel?> Authenticate(LoginRequestModel request)
     {
+        
         if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
             return null;
         var userAccount = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username);
-        if (userAccount == null || request.Password != userAccount.PasswordHash)
+        if (userAccount == null || _hasher.VerifyHashedPassword(userAccount, request.Password, userAccount.PasswordHash) == PasswordVerificationResult.Success)
             return null;
         var issuer = _configuration["JwtConfig:Issuer"];
         var audience = _configuration["JwtConfig:Audience"];

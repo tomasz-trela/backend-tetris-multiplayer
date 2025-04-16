@@ -3,7 +3,7 @@ namespace backend_tetris.services;
 public static class InviteCodeGenerator
 {
     private static readonly Random Random = new();
-    private const string Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private const string Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public static string GenerateInviteCode(int length = 5)
     {

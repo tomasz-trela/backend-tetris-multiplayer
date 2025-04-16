@@ -18,7 +18,7 @@ public class MyUser
     public string? Email { get; set; }
 
     [Required]
-    public string PasswordHash { get; set; }
+    public string? PasswordHash { get; set; }
     
     [NotMapped]
     public WebSocket? WebSocketConnection { get; set; }

@@ -2,13 +2,16 @@ using System.Text;
 using backend_tetris.database;
 using backend_tetris.services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection1");
+
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlite("Data Source=tetris.db"));
+builder.Services.AddDbContext<AppDbContext>(x => x.UseNpgsql(connectionString));
 builder.Services.AddSingleton<GameService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -52,7 +55,7 @@ app.UseAuthorization();
 app.UseWebSockets();
 app.MapControllers();
 
-
+app.MapGet("/", () => "Udało mi się zdeplojować api!");
 
 app.Run();
 

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("backend-tetris")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e77800ac3f807b43463a441b47340deeb4168382")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+055442b512b2c84bcbe82da9bce4f8535c351949")]
 [assembly: System.Reflection.AssemblyProductAttribute("backend-tetris")]
 [assembly: System.Reflection.AssemblyTitleAttribute("backend-tetris")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -318,3 +318,5 @@
 /Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/obj/Debug/net9.0/backend-tetris.pdb
 /Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/obj/Debug/net9.0/backend-tetris.genruntimeconfig.cache
 /Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/obj/Debug/net9.0/ref/backend-tetris.dll
+/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/bin/Debug/net9.0/Npgsql.dll
+/Users/tt/RiderProjects/backend-tetris-multiplayer/backend-tetris/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll

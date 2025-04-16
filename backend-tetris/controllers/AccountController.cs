@@ -3,6 +3,7 @@ using backend_tetris.entities;
 using backend_tetris.Models;
 using backend_tetris.services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ public class AccountController : ControllerBase
 {
     private readonly JwtGenerator _jwtGenerator;
     private readonly AppDbContext _context;
+    private readonly PasswordHasher<MyUser> _hasher = new();
 
     public AccountController(JwtGenerator jwtGenerator, AppDbContext context)
     {
@@ -46,8 +48,8 @@ public class AccountController : ControllerBase
         {
             Email = request.Email,
             Username = request.Username,
-            PasswordHash = request.Password
         };
+        user.PasswordHash = _hasher.HashPassword(user, request.Password);
         await _context.Users.AddAsync(user);
 
         await _context.SaveChangesAsync();
