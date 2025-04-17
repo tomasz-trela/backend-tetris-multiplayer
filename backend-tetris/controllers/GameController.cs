@@ -34,7 +34,7 @@ public class GameController : ControllerBase
         var room = await _gameService.AddUser(user);
         _logger.LogInformation("Room {id}", room.Id);
 
-        await HandleWebSocketCommunication(user, room);
+        await _gameService.HandleWebSocketCommunication(user, room);
     }
 
     [Authorize]
@@ -49,7 +49,7 @@ public class GameController : ControllerBase
 
         _logger.LogInformation("Room {id}", room.Id);
 
-        await HandleWebSocketCommunication(user, room);
+        await _gameService.HandleWebSocketCommunication(user, room);
     }
 
     [Authorize]
@@ -64,7 +64,7 @@ public class GameController : ControllerBase
 
         _logger.LogInformation("Room {id}", room.Id);
 
-        await HandleWebSocketCommunication(user, room);
+        await _gameService.HandleWebSocketCommunication(user, room);
     }
 
     private async Task<MyUser?> GetAuthenticatedUser()
@@ -87,29 +87,5 @@ public class GameController : ControllerBase
 
         user.WebSocketConnection = await HttpContext.WebSockets.AcceptWebSocketAsync();
         return user;
-    }
-
-    private async Task HandleWebSocketCommunication(MyUser user, Room room)
-    {
-        var webSocket = user.WebSocketConnection!;
-        var buffer = new byte[1024 * 2];
-
-        while (webSocket.State == WebSocketState.Open)
-        {
-            _logger.LogInformation("Receive message from {name}", user.Username);
-
-            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-
-            
-            if (result.MessageType == WebSocketMessageType.Close)
-            {
-                await GameService.RemovePlayer(user, result, room);
-                _logger.LogInformation("People in room: {count}", room.Players.Count);
-                user.WebSocketConnection = null;
-                return;
-            }
-            await room.ReceiveMessage(user, message);
-        }
     }
 }

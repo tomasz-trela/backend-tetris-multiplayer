@@ -2,8 +2,8 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using backend_tetris.DTOs;
-using System.Timers;
-using Timer = System.Timers.Timer;
+
+using backend_tetris.utils;
 
 namespace backend_tetris.entities;
 
@@ -11,11 +11,11 @@ public class Room(MyUser? user = null, RoomState state = RoomState.Open, int max
 {
     public Guid Id { get; } = Guid.NewGuid();
     public List<MyUser> Players { get; } = user == null ? [] : [user];
-    public RoomState State { get; set; } = state;
-    public int TimeLeft { get; set; } = 180;
+    public RoomState State { get; private set; } = state;
 
-    private Timer? _timer;
-    
+    private readonly CountdownTimer _timer = new(180);
+
+
     public async Task<bool> AddPlayer(MyUser player)
     {
         if(Players.Count >= maxPlayers)
@@ -24,11 +24,16 @@ public class Room(MyUser? user = null, RoomState state = RoomState.Open, int max
         State = Players.Count.IntToRoomState(maxPlayers);
         if (State == RoomState.Closed)
         {
-            StartTimer();
+            _timer.Start();
             await Broadcast("Game started"u8.ToArray());
         }
 
         return true;
+    }
+
+    public void Dispose()
+    {
+        _timer.Dispose();
     }
 
     public async Task ReceiveMessage(MyUser user, string message)
@@ -45,8 +50,8 @@ public class Room(MyUser? user = null, RoomState state = RoomState.Open, int max
             return;
         }
          
-        var broadcastMessage = JsonSerializer.Serialize<GameStateDto>(
-            new GameStateDto(user.score, enemy.score, enemy.Username, TimeLeft)
+        var broadcastMessage = JsonSerializer.Serialize(
+            new GameStateDto(user.score, enemy.score, enemy.Username, _timer.TimeLeft)
         );
         await SendToPlayer(new ArraySegment<byte>(Encoding.UTF8.GetBytes(broadcastMessage)), enemy);
     }
@@ -67,35 +72,19 @@ public class Room(MyUser? user = null, RoomState state = RoomState.Open, int max
     public async Task<RoomState> RemovePlayer(MyUser player, WebSocketReceiveResult result)
     {
         Players.Remove(player);
-        await player.WebSocketConnection?.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+        if (result.CloseStatus.HasValue)
+            await player.CloseConnection();
         return State;
     }
+    public async Task Clear()
+    {
+        foreach (var myUser in Players)
+        {
+            await myUser.CloseConnection();
+        }
+        Players.Clear();
+    }
     
-    private void StartTimer()
-    {
-        if (_timer != null)
-            return; 
-
-        _timer = new Timer(1000);
-        _timer.Elapsed += OnTimerTick;
-        _timer.AutoReset = true;
-        _timer.Start();
-    }
-
-    private void OnTimerTick(object? sender, ElapsedEventArgs e)
-    {
-        TimeLeft--;
-
-        Console.WriteLine($"Time left: {TimeLeft}");
-
-        if (TimeLeft > 0) return;
-        _timer?.Stop();
-        _timer?.Dispose();
-        _timer = null;
-            
-        _ = Broadcast("Game over"u8.ToArray());
-    }
-
 }
 
 public enum RoomState

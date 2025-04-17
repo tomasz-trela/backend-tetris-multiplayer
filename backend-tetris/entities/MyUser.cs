@@ -26,4 +26,14 @@ public class MyUser
     [NotMapped] 
     public int score { get; set; } = 0;
 
+    public async Task CloseConnection()
+    {
+        if (WebSocketConnection is not null)
+        {
+            await WebSocketConnection.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
+                CancellationToken.None);
+            WebSocketConnection.Dispose();
+        }
+        WebSocketConnection = null;
+    }
 }
